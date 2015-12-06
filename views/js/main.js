@@ -422,36 +422,6 @@ var resizePizzas = function (size) {
 
     changeSliderLabel(size);
 
-    // Returns the size difference to change a pizza element from one size to another. Called by changePizzaSlices(size).
-    /*  Commenting out, function no longer used.
-    function determineDx(elem, size) {
-        var oldWidth = elem.offsetWidth;
-        //var windowWidth = document.querySelector("#randomPizzas").offsetWidth;
-        var windowWidth = document.getElementById("randomPizzas").offsetWidth;
-        var oldSize = oldWidth / windowWidth;
-
-        // TODO: change to 3 sizes? no more xl?
-        // Changes the slider value to a percent width
-        function sizeSwitcher(size) {
-            switch (size) {
-                case "1":
-                    return 0.25;
-                case "2":
-                    return 0.3333;
-                case "3":
-                    return 0.5;
-                default:
-                    console.log("bug in sizeSwitcher");
-            }
-        }
-
-        var newSize = sizeSwitcher(size);
-        var dx = (newSize - oldSize) * windowWidth;
-
-        return dx;
-    }
-    */
-
 
     // Iterates through pizza elements on the page and changes their widths
     // Updated to reflect improvements from course videos.
@@ -526,14 +496,14 @@ function calculatePositions() {
     frame++;
     window.performance.mark("mark_start_frame");
 
-    // Reworking this block of code to batch style recalculations.  scrollTop function causes style calculations.
-    //var phase = document.body.scrollTop / 1250;
-    var phase = scrollVal / 1250;
-
+    // Reworking this block of code to batch style recalculations.  scrollTop function caused style recalculations.
+    //*changes*
+    // 1. Used a simply calcuationfor pizza position.
+    // 2. used translateX instead of requesting syle.left.
+    var phase = frame / 10;
     var offset = 0;
     for (var i = 0; i < items.length; i++) {
         offset = Math.sin(phase + (i % 5));
-
         items[i].style.transform = 'translateX(' + (items[i].basicLeft - 700 + (100 * offset)) + 'px)';
     }
 
@@ -555,7 +525,6 @@ function updatePositions() {
 
 // runs updatePositions on scroll
 window.addEventListener('scroll', function () {
-    scrollVal = window.scrollY;
     updatePositions();
 });
 
